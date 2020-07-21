@@ -45,7 +45,7 @@ public class MasterMindLogic {
 			if(Sol.charAt(i) == Ans.charAt(i)) {
 				hits++;
 			} else {
-				miss[Ans.charAt(i) % miss.length]++;
+				miss[Sol.charAt(i) % miss.length]++;
 				leftover += Ans.charAt(i) + "";
 			}
 		}

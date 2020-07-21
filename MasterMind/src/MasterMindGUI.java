@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -24,6 +25,7 @@ public class MasterMindGUI implements ActionListener {
 	private String userAnswer = "";
 	private JTextField txtHits;
 	private JTextField txtPsuedohits;
+	private JOptionPane winGame;
 
 	/**
 	 * Launch the application.
@@ -61,6 +63,7 @@ public class MasterMindGUI implements ActionListener {
 		frame.getContentPane().setLayout(null);
 		
 		txtWelcomeToThe = new JTextField();
+		txtWelcomeToThe.setEditable(false);
 		txtWelcomeToThe.setBackground(Color.ORANGE);
 		txtWelcomeToThe.setHorizontalAlignment(SwingConstants.CENTER);
 		txtWelcomeToThe.setFont(new Font("Trebuchet MS", Font.BOLD, 21));
@@ -99,17 +102,19 @@ public class MasterMindGUI implements ActionListener {
 		
 		JButton btnNewButton_4 = new JButton("");
 		btnNewButton_4.addActionListener(this);
-		btnNewButton_4.setIcon(new ImageIcon("C:\\Users\\yushu\\eclipse-workspace\\MasterMind\\25433-9-submit-button-transparent-image-thumb2.png"));
+		btnNewButton_4.setIcon(new ImageIcon(this.getClass().getResource("/Files/Submit.png")));
 		btnNewButton_4.setBounds(118, 271, 299, 85);
 		frame.getContentPane().add(btnNewButton_4);
 		
 		txtHits = new JTextField();
+		txtHits.setEditable(false);
 		txtHits.setText("HITS : ");
 		txtHits.setBounds(73, 75, 86, 20);
 		frame.getContentPane().add(txtHits);
 		txtHits.setColumns(10);
 		
 		txtPsuedohits = new JTextField();
+		txtPsuedohits.setEditable(false);
 		txtPsuedohits.setText("PSUEDOHITS: ");
 		txtPsuedohits.setBounds(369, 75, 119, 20);
 		frame.getContentPane().add(txtPsuedohits);
@@ -140,9 +145,26 @@ public class MasterMindGUI implements ActionListener {
 			MasterMindHits compare = logicMaker.findHits(answer, userAnswer);
 			txtHits.setText("Hits: " + compare.getHits());
 			txtPsuedohits.setText("PsuedoHits: " + compare.getPsuedoHits());
+			if(compare.getHits() == 4) {
+				int playAgain = JOptionPane.showConfirmDialog(frame, "You have bested me. Will you try again");
+				if(playAgain == 0) {
+					reset();
+				}
+			}
 		}
 		
 	}
+	
+	private void reset() {
+		buttonValues = new int[4];
+		for(int i = 0; i < buttons.length; i++) {
+			colorSwap(i);
+		}
+		answer = logicMaker.createCombo();
+		txtHits.setText("HITS: ");
+		txtPsuedohits.setText("PSUEDOHITS: ");
+	}
+	
 	
 	private void colorSwap(int button) {
 		if(buttonValues[button] % 4 == 0) {
